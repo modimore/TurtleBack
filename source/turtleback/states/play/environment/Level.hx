@@ -18,6 +18,11 @@ typedef BackgroundData = {
 	data:Dynamic
 }
 
+typedef LevelData = {
+	boundaries:Array<Rectangle>,
+	background: BackgroundData
+}
+
 class Level extends FlxGroup
 {
 	public var background(default, null):FlxBasic;
@@ -25,9 +30,7 @@ class Level extends FlxGroup
 	
 	public var bounds(default, null):FlxRect;
 	
-	public function new(
-		boundaryData:Array<Rectangle>,
-		backgroundData:BackgroundData)
+	public function new(levelData:LevelData)
 	{
 		super();
 		
@@ -35,9 +38,9 @@ class Level extends FlxGroup
 		boundaries = new FlxGroup();
 		add(boundaries);
 		
-		loadBoundaries(boundaryData);
+		loadBoundaries(levelData.boundaries);
 		
-		loadBackground(backgroundData);
+		loadBackground(levelData.background);
 		add(background);
 	}
 	

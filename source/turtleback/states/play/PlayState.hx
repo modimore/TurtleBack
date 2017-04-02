@@ -13,6 +13,7 @@ import flixel.group.FlxGroup;
 
 import turtleback.states.play.actors.Player;
 import turtleback.states.play.environment.Level;
+import turtleback.states.play.environment.Level.LevelData;
 
 class PlayState extends FlxState
 {
@@ -66,12 +67,15 @@ class PlayState extends FlxState
 	{
 		if (Assets.exists(m_dataPath, AssetType.TEXT))
 		{
-			var data:Dynamic = Json.parse(Assets.getText(m_dataPath));
-			m_level = new Level(data.boundaries, data.background);
+			m_level = new Level(Json.parse(Assets.getText(m_dataPath)));
 		}
 		else
 		{
-			m_level = new Level([],{type:"missing", data:null});
+			var data:LevelData = {
+				boundaries: [],
+				background: {type:"missing", data:null}
+			}
+			m_level = new Level(data);
 		}
 		
 		add(m_level);
