@@ -3,6 +3,7 @@ package turtleback.states.play.environment;
 import flixel.FlxG;
 import flixel.FlxBasic;
 import flixel.FlxObject;
+import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.math.FlxRect;
 
@@ -20,13 +21,15 @@ typedef BackgroundData = {
 
 typedef LevelData = {
 	boundaries:Array<Rectangle>,
-	background: BackgroundData
+	background: BackgroundData,
+	pickups: Array<Dynamic>
 }
 
 class Level extends FlxGroup
 {
 	public var background(default, null):FlxBasic;
 	public var boundaries(default, null):FlxGroup;
+	public var pickups(default, null):FlxGroup;
 	
 	public var bounds(default, null):FlxRect;
 	
@@ -34,34 +37,17 @@ class Level extends FlxGroup
 	{
 		super();
 		
-		bounds = new FlxRect();
+		bounds = FlxRect.get();
 		boundaries = new FlxGroup();
-		add(boundaries);
-		
 		loadBoundaries(levelData.boundaries);
+		add(boundaries);
 		
 		loadBackground(levelData.background);
 		add(background);
-	}
-	
-	public function addBoundary(x:Int, y:Int, width:Int, height:Int)
-	{
-		if (width < 0)
-		{
-			x += width;
-			width = -width;
-		}
-		if (height < 0)
-		{
-			y += height;
-			height = -height;
-		}
 		
-		var object = new FlxObject(x, y, width, height);
-		object.immovable = true;
-		boundaries.add(object);
-		
-		bounds.union(new FlxRect(x, y, width, height));
+		pickups = new FlxGroup();
+		loadPickups(levelData.pickups);
+		add(pickups);
 	}
 	
 	private function loadBackground(bgData:BackgroundData):Void
@@ -93,6 +79,17 @@ class Level extends FlxGroup
 			var object = new FlxObject(item.x, item.y, item.width, item.height);
 			object.immovable = true;
 			boundaries.add(object);
+			
+			bounds.union(FlxRect.weak(item.x, item.y, item.width, item.height));
+		}
+	}
+	
+	private function loadPickups(data:Array<Dynamic>):Void
+	{
+		for (item in data)
+		{
+			var sprite:FlxSprite = new FlxSprite(item.x, item.y, item.image);
+			pickups.add(sprite);
 		}
 	}
 }

@@ -59,6 +59,11 @@ class PlayState extends FlxState
 		super.update(dt);
 		
 		FlxG.collide(m_player, m_level.boundaries);
+		
+		if (FlxG.keys.anyPressed([Z]))
+		{
+			FlxG.overlap(m_player, m_level.pickups, pickupCallback);
+		}
 	}
 	/**
 	 * Loads the level that is specified in the data file.
@@ -73,12 +78,26 @@ class PlayState extends FlxState
 		{
 			var data:LevelData = {
 				boundaries: [],
-				background: {type:"missing", data:null}
+				background: {type:"missing", data:null},
+				pickups: []
 			}
 			m_level = new Level(data);
 		}
 		
 		add(m_level);
-		FlxG.worldBounds.copyFrom(m_level.bounds);
+		FlxG.worldBounds.union(m_level.bounds);
 	}
+	/**
+	 * Processes the player picking up an object.
+	 *
+	 * Called when the player presses the Pick up button and overlaps with a
+	 * pick-up object.
+	 *
+	 * @param	player	The player, passed in as the first overlapping object
+	 * @param	pickup	The pickup, passed in as the second overlapping object
+	 */
+	 private function pickupCallback(player:Dynamic, pickup:Dynamic):Void
+	 {
+		 pickup.kill();
+	 }
 }

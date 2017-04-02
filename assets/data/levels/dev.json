@@ -13,5 +13,10 @@
 			{ "x": 1280, "y": 0, "image": "assets/images/bg-forest.png" },
 			{ "x": 0, "y": -480, "image": "assets/images/bg-forest.png" }
 		]
-	}
+	},
+	"pickups": [
+		{ "x": 1000, "y": 400, "image": "assets/images/mushroom-tmp.png" },
+		{ "x": 1570, "y": 250, "image": "assets/images/mushroom-tmp.png" },
+		{ "x": 1840, "y": 400, "image": "assets/images/mushroom-tmp.png" }
+	]
 }
