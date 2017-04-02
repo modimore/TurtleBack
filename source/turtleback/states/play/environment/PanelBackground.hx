@@ -6,14 +6,23 @@ import flixel.FlxSprite;
 
 import flixel.group.FlxSpriteGroup;
 
+/**
+ * Position and image data for a background panel.
+ */
 typedef PanelData = {
 	x:Int,
 	y:Int,
 	image:String
 };
-
+/**
+ * A background consistent of independent image panels.
+ */
 class PanelBackground extends FlxSpriteGroup
 {
+	/**
+	 * Constructs a new background from an array of panel specifications.
+	 * @param	panels	The positions and images for the panels.
+	 */
 	public function new(panels:Array<PanelData>)
 	{
 		super();
@@ -27,7 +36,13 @@ class PanelBackground extends FlxSpriteGroup
 			add(sprite);
 		}
 	}
-	
+	/**
+	 * Makes sure only the necessary panels are live in the scene.
+	 *
+	 * Any live offscreen panels are killed, and any dead onscreen panels revived.
+	 *
+	 * @param	dt	The time that has passed since the last update.
+	 */
 	override public function update(dt:Float)
 	{
 		forEachAlive(killSpriteIfOffScreen);
@@ -35,7 +50,10 @@ class PanelBackground extends FlxSpriteGroup
 		
 		super.update(dt);
 	}
-	
+	/**
+	 * Kills a sprite if it is not visible currently.
+	 * @param	s	The sprite to potentially kill.
+	 */
 	static private function killSpriteIfOffScreen(s:FlxSprite):Void
 	{
 		if (!s.isOnScreen())
@@ -43,7 +61,10 @@ class PanelBackground extends FlxSpriteGroup
 			s.kill();
 		}
 	}
-	
+	/**
+	 * Revive a sprite if it is onscreen.
+	 * @param	s	The sprite to potentially revive.
+	 */
 	static private function reviveSpriteIfOnScreen(s:FlxSprite):Void
 	{
 		if (s.isOnScreen())

@@ -15,6 +15,9 @@ import turtleback.states.play.actors.Player;
 import turtleback.states.play.environment.Level;
 import turtleback.states.play.environment.Level.LevelData;
 
+/**
+ * The play state for this game.
+ */
 class PlayState extends FlxState
 {
 	private var m_dataPath:String = "assets/data/levels/dev.json";
@@ -43,9 +46,9 @@ class PlayState extends FlxState
 		m_cameraTarget = new FlxObjectFollower(m_player,
 			(FlxG.width - m_player.width) / 2,
 			(FlxG.height - m_player.height),
-			FlxG.width / 2, FlxG.height / 2);
+			FlxG.width / 2,
+			FlxG.height / 2);
 		add(m_cameraTarget);
-		
 		FlxG.camera.follow(m_cameraTarget.anchor, LOCKON, 1);
 		
 		super.create();
@@ -58,6 +61,7 @@ class PlayState extends FlxState
 	{
 		super.update(dt);
 		
+		// Ensure that the player does not pass beyond the stage's boundaries.
 		FlxG.collide(m_player, m_level.boundaries);
 		
 		if (FlxG.keys.anyPressed([Z]))

@@ -7,24 +7,34 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.math.FlxRect;
 
+/**
+ * The coordinates and dimensions of a rectangle.
+ */
 typedef Rectangle = {
 	x:Int,
 	y:Int,
 	width:Int,
 	height:Int
 }
-
+/**
+ * Definition of the data required to create a background.
+ */
 typedef BackgroundData = {
 	type:String,
 	data:Dynamic
 }
-
+/**
+ * Definition of the fields required in the level data.
+ */
 typedef LevelData = {
 	boundaries:Array<Rectangle>,
 	background: BackgroundData,
 	pickups: Array<Dynamic>
 }
 
+/**
+ * A FlxGroup containing most of the components of a gameplay level.
+ */
 class Level extends FlxGroup
 {
 	public var background(default, null):FlxBasic;
@@ -32,7 +42,10 @@ class Level extends FlxGroup
 	public var pickups(default, null):FlxGroup;
 	
 	public var bounds(default, null):FlxRect;
-	
+	/**
+	 * Constructs a level from an input object.
+	 * @param	levelData	A description of the components of a specific level.
+	 */
 	public function new(levelData:LevelData)
 	{
 		super();
@@ -49,7 +62,9 @@ class Level extends FlxGroup
 		loadPickups(levelData.pickups);
 		add(pickups);
 	}
-	
+	/**
+	 * Creates a background for this level with the specified type and images.
+	 */
 	private function loadBackground(bgData:BackgroundData):Void
 	{
 		switch(bgData.type)
@@ -60,7 +75,15 @@ class Level extends FlxGroup
 				background = new FlxBasic();
 		}
 	}
-	
+	/**
+	 * Creates the level boundaries from provided rectangle coordinates.
+	 *
+	 * Each rectangle becomes an immovable FlxObject at the position specified
+	 * and with the dimensions specified. These are meant to stop the player
+	 * from going off of the map.
+	 *
+	 * @param	data	Rectangle coordinates that will be used to create borders.
+	 */
 	private function loadBoundaries(data:Array<Rectangle>):Void
 	{
 		for (item in data)
@@ -83,7 +106,13 @@ class Level extends FlxGroup
 			bounds.union(FlxRect.weak(item.x, item.y, item.width, item.height));
 		}
 	}
-	
+	/**
+	 * Loads the pickups for the level.
+	 *
+	 * Currently each pickup is a static image placed at a known position.
+	 *
+	 * @param	data	An array of image names and positions.
+	 */
 	private function loadPickups(data:Array<Dynamic>):Void
 	{
 		for (item in data)

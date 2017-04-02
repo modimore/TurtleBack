@@ -18,11 +18,11 @@ class FlxObjectFollower extends FlxGroup
 	
 	/**
 	 * Create the following group with an anchor object.
-	 * @param	{FlxObject}	target	The FlxObject to follow
-	 * @param	{Float} distanceX	Maximum distance on x-axis from the target
-	 * @param	{Float}	distanceY Maximum distance on y-axis from the target
-	 * @param	{Float = null}	x	Initial X position for the group.
-	 * @param	{Float = null}	y	Initial Y position for the group.
+	 * @param	target	The FlxObject to follow
+	 * @param	distanceX	Maximum distance on x-axis from the target
+	 * @param	distanceY Maximum distance on y-axis from the target
+	 * @param	x	Initial X position for the group.
+	 * @param	y	Initial Y position for the group.
 	 */
 	public function new(target:FlxObject,
 		distanceX:Float, distanceY:Float,
@@ -51,14 +51,17 @@ class FlxObjectFollower extends FlxGroup
 	
 	/**
 	 * Follows the target every update step.
-	 * @param	{Float}	dt	The time in seconds since the last update
+	 * @param	dt	The time in seconds since the last update
 	 */
 	override public function update(dt:Float):Void
 	{
 		followTarget(dt);
 		super.update(dt);
 	}
-	
+	/**
+	 * Moves the follower toward the target if it is too far away.
+	 * @param	dt	The time in seconds that has passed since the last update.
+	 */
 	private function followTarget(dt:Float) {
 		var x:Float = anchor.x;
 		var y:Float = anchor.y;

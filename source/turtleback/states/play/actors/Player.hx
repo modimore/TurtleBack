@@ -13,8 +13,8 @@ class Player extends FlxSprite
 	
 	/**
 	 * Constructs a player.
-	 * @param	{Float = 0}	x	The player's initial x coordinate
-	 * @param	{Float = 0}	y	The player's initial y coordinate.
+	 * @param	x	The player's initial x coordinate
+	 * @param	y	The player's initial y coordinate.
 	 */
 	public function new(x:Float = 0, y:Float = 0)
 	{
@@ -26,8 +26,8 @@ class Player extends FlxSprite
 		setFacingFlip(FlxObject.RIGHT, true, false);
 	}
 	/**
-	 * Called by the main loop to update the player.
-	 * @param	{Float}	dt	The time in seconds since the last update.
+	 * Updates the player, moving them if needed.
+	 * @param	dt	The time in seconds since the last update.
 	 */
 	override public function update(dt:Float):Void
 	{
@@ -67,10 +67,12 @@ class Player extends FlxSprite
 		
 		if (up && down) { up = down = false; }
 		
-		if (up) {
+		if (up)
+		{
 			velocityY  = -1 * _SPEED;
 		}
-		if (down) {
+		if (down)
+		{
 			velocityY = _SPEED;
 		}
 		
