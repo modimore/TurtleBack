@@ -16,13 +16,15 @@ import turtleback.states.play.environment.Level;
 
 class PlayState extends FlxState
 {
-	private var _dataPath:String = "assets/data/levels/dev.json";
+	private var m_dataPath:String = "assets/data/levels/dev.json";
 	
-	private var _cameraTarget:FlxObjectFollower;
-	private var _player:Player;
+	private var m_cameraTarget:FlxObjectFollower;
+	private var m_player:Player;
 	
-	private var _level:Level;
-	
+	private var m_level:Level;
+	/**
+	 * Creates all FlxObject children when added to the game root.
+	 */
 	override public function create():Void
 	{
 		#if FLX_MOUSE
@@ -31,41 +33,48 @@ class PlayState extends FlxState
 		
 		loadLevel();
 		
-		_player = new Player();
-		_player.setPosition(20, FlxG.height - 20 - _player.height);
-		add(_player);
+		// Set up the player.
+		m_player = new Player();
+		m_player.setPosition(20, FlxG.height - 20 - m_player.height);
+		add(m_player);
 		
-		_cameraTarget = new FlxObjectFollower(_player,
-			(FlxG.width - _player.width) / 2,
-			(FlxG.height - _player.height),
+		// Set up the target that the camera will follow.
+		m_cameraTarget = new FlxObjectFollower(m_player,
+			(FlxG.width - m_player.width) / 2,
+			(FlxG.height - m_player.height),
 			FlxG.width / 2, FlxG.height / 2);
-		add(_cameraTarget);
+		add(m_cameraTarget);
 		
-		FlxG.camera.follow(_cameraTarget.anchor, LOCKON, 1);
+		FlxG.camera.follow(m_cameraTarget.anchor, LOCKON, 1);
 		
 		super.create();
 	}
-	
+	/**
+	 * Updates all FlxObjects in this state.
+	 * @param	dt	The time that has passed since the last update
+	 */
 	override public function update(dt:Float)
 	{
 		super.update(dt);
 		
-		FlxG.collide(_player, _level.boundaries);
+		FlxG.collide(m_player, m_level.boundaries);
 	}
-	
+	/**
+	 * Loads the level that is specified in the data file.
+	 */
 	private function loadLevel():Void
 	{
-		if (Assets.exists(_dataPath, AssetType.TEXT))
+		if (Assets.exists(m_dataPath, AssetType.TEXT))
 		{
-			var data:Dynamic = Json.parse(Assets.getText(_dataPath));
-			_level = new Level(data.boundaries, data.background);
+			var data:Dynamic = Json.parse(Assets.getText(m_dataPath));
+			m_level = new Level(data.boundaries, data.background);
 		}
 		else
 		{
-			_level = new Level([],{type:"missing", data:null});
+			m_level = new Level([],{type:"missing", data:null});
 		}
 		
-		add(_level);
-		FlxG.worldBounds.copyFrom(_level.bounds);
+		add(m_level);
+		FlxG.worldBounds.copyFrom(m_level.bounds);
 	}
 }
