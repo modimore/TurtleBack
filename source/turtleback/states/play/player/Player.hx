@@ -1,4 +1,4 @@
-package turtleback.states.play.actors;
+package turtleback.states.play.player;
 
 import flixel.FlxG;
 import flixel.FlxObject;

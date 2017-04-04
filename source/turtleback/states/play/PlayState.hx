@@ -11,9 +11,9 @@ import flixel.FlxState;
 import flixel.math.FlxRect;
 import flixel.group.FlxGroup;
 
-import turtleback.states.play.actors.Player;
 import turtleback.states.play.environment.Level;
 import turtleback.states.play.environment.Level.LevelData;
+import turtleback.states.play.player.Player;
 
 /**
  * The play state for this game.
