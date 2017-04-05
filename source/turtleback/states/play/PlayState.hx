@@ -15,6 +15,8 @@ import turtleback.states.play.environment.Level;
 import turtleback.states.play.environment.Level.LevelData;
 import turtleback.states.play.player.Player;
 
+import turtleback.states.play.ui.InventoryUI;
+
 /**
  * The play state for this game.
  */
@@ -24,6 +26,9 @@ class PlayState extends FlxState
 	
 	private var m_cameraTarget:FlxObjectFollower;
 	private var m_player:Player;
+	
+	private var m_inventoryUI:InventoryUI;
+	private var m_mushroomCount:Int;
 	
 	private var m_level:Level;
 	/**
@@ -50,6 +55,12 @@ class PlayState extends FlxState
 			FlxG.height / 2);
 		add(m_cameraTarget);
 		FlxG.camera.follow(m_cameraTarget.anchor, LOCKON, 1);
+		
+		m_inventoryUI = new InventoryUI();
+		add(m_inventoryUI);
+		
+		m_inventoryUI.addItemType("mushroom", "assets/images/mushroom-tmp.png", 0);
+		m_mushroomCount = 0;
 		
 		super.create();
 	}
@@ -103,5 +114,7 @@ class PlayState extends FlxState
 	 private function pickupCallback(player:Dynamic, pickup:Dynamic):Void
 	 {
 		 pickup.kill();
+		 m_mushroomCount += 1;
+		 m_inventoryUI.updateItemCount("mushroom", m_mushroomCount);
 	 }
 }
