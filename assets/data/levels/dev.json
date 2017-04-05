@@ -15,8 +15,8 @@
 		]
 	},
 	"pickups": [
-		{ "x": 1000, "y": 400, "image": "assets/images/mushroom-tmp.png" },
-		{ "x": 1570, "y": 250, "image": "assets/images/mushroom-tmp.png" },
-		{ "x": 1840, "y": 400, "image": "assets/images/mushroom-tmp.png" }
+		{ "type": "mushroom", "x": 1000, "y": 400, "image": "assets/images/mushroom-tmp.png" },
+		{ "type": "mushroom", "x": 1570, "y": 250, "image": "assets/images/mushroom-tmp.png" },
+		{ "type": "mushroom", "x": 1840, "y": 400, "image": "assets/images/mushroom-tmp.png" }
 	]
 }

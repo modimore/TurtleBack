@@ -27,8 +27,7 @@ class PlayState extends FlxState
 	private var m_cameraTarget:FlxObjectFollower;
 	private var m_player:Player;
 	
-	private var m_inventoryUI:InventoryUI;
-	private var m_mushroomCount:Int;
+	public var inventoryUI:InventoryUI;
 	
 	private var m_level:Level;
 	/**
@@ -41,6 +40,7 @@ class PlayState extends FlxState
 		#end
 		
 		loadLevel();
+		
 		
 		// Set up the player.
 		m_player = new Player();
@@ -56,11 +56,11 @@ class PlayState extends FlxState
 		add(m_cameraTarget);
 		FlxG.camera.follow(m_cameraTarget.anchor, LOCKON, 1);
 		
-		m_inventoryUI = new InventoryUI();
-		add(m_inventoryUI);
+		inventoryUI = new InventoryUI();
+		add(inventoryUI);
 		
-		m_inventoryUI.addItemType("mushroom", "assets/images/mushroom-tmp.png", 0);
-		m_mushroomCount = 0;
+		m_player.inventory.connectUI(inventoryUI);
+		m_player.inventory.addItemType("mushroom", "assets/images/mushroom-tmp.png");
 		
 		super.create();
 	}
@@ -114,7 +114,6 @@ class PlayState extends FlxState
 	 private function pickupCallback(player:Dynamic, pickup:Dynamic):Void
 	 {
 		 pickup.kill();
-		 m_mushroomCount += 1;
-		 m_inventoryUI.updateItemCount("mushroom", m_mushroomCount);
+		 m_player.inventory.addItem(pickup.type);
 	 }
 }

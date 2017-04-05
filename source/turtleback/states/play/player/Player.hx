@@ -10,6 +10,7 @@ import flixel.FlxSprite;
 class Player extends FlxSprite
 {
 	private static var _SPEED:Float = 100.0;
+	public var inventory:Inventory;
 	
 	/**
 	 * Constructs a player.
@@ -24,6 +25,8 @@ class Player extends FlxSprite
 		
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
+		
+		inventory = new Inventory();
 	}
 	/**
 	 * Updates the player, moving them if needed.

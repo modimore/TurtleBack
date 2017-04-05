@@ -111,14 +111,14 @@ class Level extends FlxGroup
 	 *
 	 * Currently each pickup is a static image placed at a known position.
 	 *
-	 * @param	data	An array of image names and positions.
+	 * @param	data	An array of grouped item types, image names, and positions.
 	 */
 	private function loadPickups(data:Array<Dynamic>):Void
 	{
 		for (item in data)
 		{
-			var sprite:FlxSprite = new FlxSprite(item.x, item.y, item.image);
-			pickups.add(sprite);
+			var pickup = new Pickup(item.type, item.x, item.y, item.image);
+			pickups.add(pickup);
 		}
 	}
 }
