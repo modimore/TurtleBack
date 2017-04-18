@@ -26,9 +26,12 @@ class Player extends FlxSprite
 {
 	private static var WALK_SPEED:Float = 100.0;
 	private static var JUMP_SPEED:Float = 200.0;
+	private static var IDLE_DRAG_X:Float = 200.0;
 	private static var GRAVITY:Float = 250.0;
 	
 	private var m_motionState:MotionState;
+	private var m_motionDirection:MotionDirection;
+	
 	public var inventory:Inventory;
 	
 	/**
@@ -48,6 +51,7 @@ class Player extends FlxSprite
 		inventory = new Inventory();
 		
 		m_motionState = IDLE;
+		m_motionDirection = NEUTRAL;
 	}
 	/**
 	 * Updates the player based on their current motion state.
@@ -55,8 +59,6 @@ class Player extends FlxSprite
 	 */
 	override public function update(dt:Float):Void
 	{
-		var direction:MotionDirection = NEUTRAL;
-		
 		if (m_motionState != FALLING)
 		{
 			var up = FlxG.keys.anyPressed([UP, W]);
@@ -69,32 +71,36 @@ class Player extends FlxSprite
 			
 			if (left)
 			{
-				direction = LEFT;
+				m_motionDirection = LEFT;
 			}
 			else if (right)
 			{
-				direction = RIGHT;
+				m_motionDirection = RIGHT;
+			}
+			else
+			{
+				m_motionDirection = NEUTRAL;
 			}
 			
 			if (up)
 			{
-				m_motionState = FALLING;
-				m_jump(direction);
+				m_jump();
+				m_setState(FALLING);
 			}
 			else if (left || right)
 			{
-				m_motionState = WALKING;
+				m_setState(WALKING);
 			}
 			else
 			{
-				m_motionState = IDLE;
+				m_setState(IDLE);
 			}
 		}
 		
 		switch(m_motionState)
 		{
 			case WALKING:
-				m_updateWalkingHelper(direction);
+				m_updateWalkingHelper();
 			case FALLING:
 				m_updateFallingHelper();
 			case IDLE:
@@ -104,42 +110,70 @@ class Player extends FlxSprite
 		super.update(dt);
 	}
 	/**
+	 * Enforces that the player is in the desired motion state.
+	 *
+	 * If the player is already in the specified state, nothing will happen.
+	 * If not, this method will perform the setup for the desired state and
+	 * then switch to it.
+	 *
+	 * @param	nextState	The state to try to enter.
+	 */
+	private function m_setState(nextState:MotionState):Void
+	{
+		if (nextState == m_motionState)
+		{
+			return;
+		}
+		
+		switch nextState
+		{
+			case IDLE:
+				drag.set(IDLE_DRAG_X, drag.y);
+				m_motionDirection = NEUTRAL;
+			case WALKING:
+				m_setupWalkingState();
+			case FALLING:
+				acceleration.set(0, GRAVITY);
+				drag.set(0, drag.y);
+		}
+		
+		m_motionState = nextState;
+	}
+	/**
 	 * Start the player moving in a jump arc.
 	 *
 	 * The arc can be straight up, or it can include a horizontal component.
 	 *
 	 * @param	horizontalDirection	The horizontal direction in this update cycle.
 	 */
-	private function m_jump(horizontalDirection:MotionDirection):Void
+	private function m_jump():Void
 	{
 		var velocityX:Float = 0;
-		if (horizontalDirection == LEFT)
+		if (m_motionDirection == LEFT)
 		{
 			velocityX = -WALK_SPEED;
+			facing = FlxObject.LEFT;
 		}
-		else if (horizontalDirection == RIGHT)
+		else if (m_motionDirection == RIGHT)
 		{
 			velocityX = WALK_SPEED;
+			facing = FlxObject.RIGHT;
 		}
 		
 		velocity.set(velocityX, -JUMP_SPEED);
-		acceleration.set(drag.x, GRAVITY);
 	}
 	/**
-	 * Helps update the player in their walking state.
+	 * Sets up the walking state for the player.
 	 *
-	 * Sets the player's velocity for this step to their walking speed in the
-	 * correct direction.
-	 * // TODO: Much of this functionality seems like it should belong to a state
-	 * switching function rather than a specific state.
-	 *
-	 * @param	direction	The direction that the player will be walking in.
+	 * Specifically, this sets the player's velocity and their facing direction
+	 * based on their motion direction. Also sets the drag force acting on them
+	 * to zero.
 	 */
-	private function m_updateWalkingHelper(direction:MotionDirection):Void
+	private function m_setupWalkingState()
 	{
 		var velocityX:Float;
 		
-		switch(direction)
+		switch(m_motionDirection)
 		{
 			case LEFT:
 				velocityX = -WALK_SPEED;
@@ -152,6 +186,23 @@ class Player extends FlxSprite
 		}
 		
 		velocity.set(velocityX, 0);
+		drag.set(0, drag.y);
+	}
+	/**
+	 * Helps update the player in their walking state.
+	 *
+	 * This performs two important actions. First, it makes sure the direction
+	 * the player is walking is correct. Second, it stops the player if they
+	 * collide with anything on the left or the right.
+	 *
+	 * @param	direction	The direction that the player will be walking in.
+	 */
+	private function m_updateWalkingHelper():Void
+	{
+		if ((m_motionDirection == LEFT) != (velocity.x < 0))
+		{
+			m_setupWalkingState();
+		}
 		
 		if (isTouching(FlxObject.LEFT | FlxObject.RIGHT))
 		{
@@ -172,8 +223,7 @@ class Player extends FlxSprite
 		if (isTouching(FlxObject.DOWN))
 		{
 			acceleration.set(0, 0);
-			velocity.set(velocity.x, 0);
-			m_motionState = IDLE;
+			m_setState(IDLE);
 		}
 		else if (isTouching(FlxObject.UP))
 		{
@@ -183,12 +233,10 @@ class Player extends FlxSprite
 	/**
 	 * Helps update the player in their idle state.
 	 *
-	 * This function keeps the player actually idle by setting velocity to zero.
-	 * TODO: Really this is logic that should be handled on a state switch, not
-	 * every update for this specific state.
+	 * Currently does nothing, but it's being kept in case it is needed.
 	 */
 	private function m_updateIdleHelper():Void
 	{
-		velocity.set(0, 0);
+		
 	}
 }
