@@ -90,13 +90,13 @@ class Level extends FlxGroup
 		{
 			if (item.width < 0)
 			{
-				item.x -= item.width;
 				item.width = -item.width;
+				item.x -= item.width;
 			}
 			if (item.height < 0)
 			{
-				item.y -= item.width;
 				item.height = -item.height;
+				item.y -= item.height;
 			}
 			
 			var object = new FlxObject(item.x, item.y, item.width, item.height);
