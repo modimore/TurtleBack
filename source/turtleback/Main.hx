@@ -3,6 +3,7 @@ package turtleback;
 import openfl.display.Sprite;
 import flixel.FlxGame;
 
+import turtleback.states.cutscene.CutsceneState;
 import turtleback.states.play.PlayState;
 
 /**
@@ -16,6 +17,6 @@ class Main extends Sprite
 	{
 		super();
 		
-		this.addChild(new FlxGame(0, 0, PlayState));
+		this.addChild(new FlxGame(0, 0, CutsceneState));
 	}
 }
