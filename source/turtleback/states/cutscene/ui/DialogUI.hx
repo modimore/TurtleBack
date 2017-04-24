@@ -58,6 +58,7 @@ class DialogUI extends FlxSpriteGroup
 		m_speakerIdentifier.text = speakerName;
 		
 		m_currentLine.offsetFromLeft(m_speakerIdentifier, m_speakerIdentifier.width + 10);
+		m_currentLine.fieldWidth = width - (m_currentLine.x - x) - 10;
 		setLine(line);
 	}
 	/**

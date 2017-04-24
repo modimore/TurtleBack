@@ -20,7 +20,7 @@ class CutsceneState extends FlxState
 	private static var LINES:Array<String> = [
 		"",
 		"I'm a wizard.",
-		"Please find some mushrooms for my pig.",
+		"Please find some mushrooms for my pig. I need three purple mushrooms for their dinner.",
 	];
 	private var lineIndex = 0;
 	private var m_lineSwitchDelay:Float = 1.0 / 6.0;
