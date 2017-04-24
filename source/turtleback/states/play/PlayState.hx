@@ -114,14 +114,14 @@ class PlayState extends FlxState
 	 * @param	player	The player, passed in as the first overlapping object
 	 * @param	pickup	The pickup, passed in as the second overlapping object
 	 */
-	 private function pickupCallback(player:Dynamic, pickup:Dynamic):Void
-	 {
-		 pickup.kill();
-		 m_player.inventory.addItem(pickup.type);
-		 
-		 if (m_player.goals.met)
-		 {
-			 FlxG.switchState(new CutsceneState(true));
-		 }
-	 }
+	private function pickupCallback(player:Dynamic, pickup:Dynamic):Void
+	{
+		pickup.kill();
+		m_player.inventory.addItem(pickup.type);
+		
+		if (m_player.goals.met)
+		{
+			FlxG.switchState(new CutsceneState(true));
+		}
+	}
 }
