@@ -121,7 +121,7 @@ class PlayState extends FlxState
 		 
 		 if (m_player.goals.met)
 		 {
-			 FlxG.switchState(new CutsceneState());
+			 FlxG.switchState(new CutsceneState(true));
 		 }
 	 }
 }
