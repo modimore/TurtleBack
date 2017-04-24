@@ -11,6 +11,8 @@ import flixel.FlxState;
 import flixel.math.FlxRect;
 import flixel.group.FlxGroup;
 
+import turtleback.states.cutscene.CutsceneState;
+
 import turtleback.states.play.environment.Level;
 import turtleback.states.play.environment.Level.LevelData;
 import turtleback.states.play.player.Player;
@@ -61,6 +63,7 @@ class PlayState extends FlxState
 		
 		m_player.inventory.connectUI(inventoryUI);
 		m_player.inventory.addItemType("mushroom", "assets/images/mushroom-tmp.png");
+		m_player.goals.addGoal("mushroom", 3);
 		
 		super.create();
 	}
@@ -115,5 +118,10 @@ class PlayState extends FlxState
 	 {
 		 pickup.kill();
 		 m_player.inventory.addItem(pickup.type);
+		 
+		 if (m_player.goals.met)
+		 {
+			 FlxG.switchState(new CutsceneState());
+		 }
 	 }
 }

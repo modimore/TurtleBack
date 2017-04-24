@@ -33,6 +33,7 @@ class Player extends FlxSprite
 	private var m_motionDirection:MotionDirection;
 	
 	public var inventory:Inventory;
+	public var goals:Goals;
 	
 	/**
 	 * Constructs a player.
@@ -48,7 +49,8 @@ class Player extends FlxSprite
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
 		
-		inventory = new Inventory();
+		inventory = new Inventory(this);
+		goals = new Goals();
 		
 		m_motionState = IDLE;
 		m_motionDirection = NEUTRAL;

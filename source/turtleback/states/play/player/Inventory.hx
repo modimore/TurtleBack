@@ -12,14 +12,16 @@ import turtleback.states.play.ui.InventoryUI;
 class Inventory
 {
 	private var m_itemTypeCounts:Map<String, Int>;
+	private var r_player:Player;
 	private var r_ui:InventoryUI;
 	
 	/**
 	 * Creates an empty inventory.
 	 * There are no initial item types, and no UI element is connected.
 	 */
-	public function new()
+	public function new(p:Player)
 	{
+		r_player = p;
 		m_itemTypeCounts = new Map<String, Int>();
 		r_ui = null;
 	}
@@ -55,5 +57,6 @@ class Inventory
 		m_itemTypeCounts.set(itemType, count);
 		
 		r_ui.updateItemCount(itemType, count);
+		r_player.goals.checkGoal(itemType, count);
 	}
 }
