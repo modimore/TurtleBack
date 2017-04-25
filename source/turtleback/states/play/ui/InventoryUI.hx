@@ -10,21 +10,53 @@ import flixel.util.FlxColor;
 using ext.flixel.FlxObjectExt;
 
 /**
- * A specification of the needed FlxSprites for each item type.
+ * A sprite group to show an item image and count.
  */
-typedef InventoryItemSprites = {
-	image:FlxSprite,
-	count:FlxText
+class InventoryItemSprite extends FlxSpriteGroup
+{
+	public var itemImage(default, null):FlxSprite;
+	public var itemCount(default, null):FlxText;
+	
+	/**
+	 * Creates a InvetoryItemSprite for an item.
+	 * @param	x	The x position of the group.
+	 * @param	y	The y position of the group.
+	 * @param	assetPath	The path to the item asset.
+	 */
+	public function new(x:Float, y:Float, assetPath:String,count:Int)
+	{
+		super(x, y);
+		
+		itemImage = new FlxSprite(0, 0, assetPath);
+		
+		itemCount = new FlxText();
+		itemCount.text = Std.string(count);
+		itemCount.alignment = RIGHT;
+		itemCount.alignRight(itemImage);
+		itemCount.alignBottom(itemImage);
+		
+		add(itemImage);
+		add(itemCount);
+	}
+	/**
+	 * Sets the displayed count for the corresponding item.
+	 * @param	count	The updated item count.
+	 */
+	public function setCount(count:Int):Void
+	{
+		itemCount.text = Std.string(count);
+		itemCount.alignRight(itemImage);
+	}
 }
 
 /**
  * A collection of sprites that display the player's inventory.
  */
-class InventoryUI extends FlxGroup
+class InventoryUI extends FlxSpriteGroup
 {
 	private var m_bg:FlxSprite;
 	
-	private var m_itemSprites:Map<String, InventoryItemSprites>;
+	private var m_itemSprites:Map<String, InventoryItemSprite>;
 	private var m_itemSpriteGroup:FlxSpriteGroup;
 	
 	/**
@@ -33,17 +65,21 @@ class InventoryUI extends FlxGroup
 	public function new()
 	{
 		super();
+		// With not items, this should not be visible.
+		visible = false;
+		// This is not mobile and should not collide with anything.
+		moves = false;
+		solid = false;
 		
 		m_bg = new FlxSprite();
-		m_bg.makeGraphic(FlxG.width, 80, FlxColor.GRAY);
+		m_bg.makeGraphic(1, 80, FlxColor.GRAY);
 		add(m_bg);
-		m_bg.scrollFactor.set(0, 0);
 		
-		m_itemSprites = new Map<String, InventoryItemSprites>();
+		m_itemSprites = new Map<String, InventoryItemSprite>();
 		m_itemSpriteGroup = new FlxSpriteGroup(10, 0);
-		m_itemSpriteGroup.alignTop(m_bg);
 		add(m_itemSpriteGroup);
-		m_itemSpriteGroup.scrollFactor.set(0, 0);
+		
+		scrollFactor.set(0, 0);
 	}
 	/**
 	 * Adds a slot for a item type to the inventory.
@@ -53,25 +89,20 @@ class InventoryUI extends FlxGroup
 	 */
 	public function addItemType(itemType:String, assetPath:String, count:Int = 0):Void
 	{
-		var imageX:Float = m_itemSpriteGroup.width;
-		if (m_itemSpriteGroup.members.length > 0)
+		if (m_itemSpriteGroup.length == 0)
 		{
-			imageX += 10;
+			visible = true;
 		}
 		
-		var imageSprite = new FlxSprite(imageX, 0, assetPath);
-		imageSprite.alignCenterY(m_bg);
+		var s = new InventoryItemSprite(0, 0, assetPath, count);
+		s.offsetFromLeft(m_bg, m_itemSpriteGroup.width + 10 * m_itemSpriteGroup.length);
+		s.alignCenterY(m_bg);
 		
-		var countSprite = new FlxText();
-		countSprite.text = Std.string(count);
-		countSprite.alignment = RIGHT;
-		countSprite.alignRight(imageSprite);
-		countSprite.alignBottom(imageSprite);
+		m_itemSpriteGroup.add(s);
 		
-		m_itemSpriteGroup.add(imageSprite);
-		m_itemSpriteGroup.add(countSprite);
+		m_itemSprites.set(itemType, s);
 		
-		m_itemSprites.set(itemType, { image: imageSprite, count: countSprite });
+		m_bg.makeGraphic(Std.int(m_itemSpriteGroup.width) + 20, Std.int(this.height), FlxColor.GRAY);
 	}
 	/**
 	 * Updates the item count for a specific item type.
@@ -82,9 +113,7 @@ class InventoryUI extends FlxGroup
 	{
 		if (m_itemSprites.exists(itemType))
 		{
-			var sprites = m_itemSprites.get(itemType);
-			sprites.count.text = Std.string(count);
-			sprites.count.alignRight(sprites.image);
+			m_itemSprites.get(itemType).setCount(count);
 		}
 	}
 }
