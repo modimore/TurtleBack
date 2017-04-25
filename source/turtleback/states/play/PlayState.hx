@@ -15,6 +15,8 @@ import turtleback.states.cutscene.CutsceneState;
 
 import turtleback.states.play.environment.Level;
 import turtleback.states.play.environment.Level.LevelData;
+import turtleback.states.play.environment.Pickup;
+import turtleback.states.play.environment.Pickup.PickupData;
 import turtleback.states.play.player.Player;
 
 import turtleback.states.play.ui.InventoryUI;
@@ -28,6 +30,7 @@ class PlayState extends FlxState
 	
 	private var m_cameraTarget:FlxObjectFollower;
 	private var m_player:Player;
+	private var m_pickups:FlxGroup;
 	
 	public var inventoryUI:InventoryUI;
 	
@@ -41,13 +44,13 @@ class PlayState extends FlxState
 		FlxG.mouse.visible = false;
 		#end
 		
-		loadLevel();
-		
+		m_pickups = new FlxGroup();
 		
 		// Set up the player.
 		m_player = new Player();
 		m_player.setPosition(20, FlxG.height - 20 - m_player.height);
-		add(m_player);
+		
+		loadLevel();
 		
 		// Set up the target that the camera will follow.
 		m_cameraTarget = new FlxObjectFollower(m_player,
@@ -55,15 +58,18 @@ class PlayState extends FlxState
 			(FlxG.height - m_player.height),
 			FlxG.width / 2,
 			FlxG.height / 2);
-		add(m_cameraTarget);
 		FlxG.camera.follow(m_cameraTarget.anchor, LOCKON, 1);
 		
 		inventoryUI = new InventoryUI();
-		add(inventoryUI);
 		
 		m_player.inventory.connectUI(inventoryUI);
 		m_player.inventory.addItemType("mushroom", "assets/images/mushroom-tmp.png");
-		m_player.goals.addGoal("mushroom", 3);
+		
+		add(m_level);
+		add(m_pickups);
+		add(m_player);
+		add(inventoryUI);
+		add(m_cameraTarget);
 		
 		super.create();
 	}
@@ -80,7 +86,7 @@ class PlayState extends FlxState
 		
 		if (FlxG.keys.anyPressed([Z]))
 		{
-			FlxG.overlap(m_player, m_level.pickups, pickupCallback);
+			FlxG.overlap(m_player, m_pickups, pickupCallback);
 		}
 	}
 	/**
@@ -90,20 +96,42 @@ class PlayState extends FlxState
 	{
 		if (Assets.exists(m_dataPath, AssetType.TEXT))
 		{
-			m_level = new Level(Json.parse(Assets.getText(m_dataPath)));
+			var data = Json.parse(Assets.getText(m_dataPath));
+			m_level = new Level(data.level);
+			
+			loadPickups(data.pickups);
+			
+			var quotas:Array<Dynamic> = data.quotas;
+			for (quota in quotas)
+			{
+				m_player.goals.addGoal(quota.type, quota.quantity);
+			}
 		}
 		else
 		{
 			var data:LevelData = {
 				boundaries: [],
 				background: {type:"missing", data:null},
-				pickups: []
 			}
 			m_level = new Level(data);
 		}
 		
-		add(m_level);
 		FlxG.worldBounds.union(m_level.bounds);
+	}
+	/**
+	 * Loads the pickups for the level.
+	 *
+	 * Currently each pickup is a static image placed at a known position.
+	 *
+	 * @param	data	An array of grouped item types, image names, and positions.
+	 */
+	private function loadPickups(data:Array<PickupData>):Void
+	{
+		for (item in data)
+		{
+			var pickup = new Pickup(item.type, item.x, item.y, item.image);
+			m_pickups.add(pickup);
+		}
 	}
 	/**
 	 * Processes the player picking up an object.

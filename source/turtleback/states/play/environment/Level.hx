@@ -28,8 +28,7 @@ typedef BackgroundData = {
  */
 typedef LevelData = {
 	boundaries:Array<Rectangle>,
-	background: BackgroundData,
-	pickups: Array<Dynamic>
+	background: BackgroundData
 }
 
 /**
@@ -39,7 +38,6 @@ class Level extends FlxGroup
 {
 	public var background(default, null):FlxBasic;
 	public var boundaries(default, null):FlxGroup;
-	public var pickups(default, null):FlxGroup;
 	
 	public var bounds(default, null):FlxRect;
 	/**
@@ -57,10 +55,6 @@ class Level extends FlxGroup
 		
 		loadBackground(levelData.background);
 		add(background);
-		
-		pickups = new FlxGroup();
-		loadPickups(levelData.pickups);
-		add(pickups);
 	}
 	/**
 	 * Creates a background for this level with the specified type and images.
@@ -104,21 +98,6 @@ class Level extends FlxGroup
 			boundaries.add(object);
 			
 			bounds.union(FlxRect.weak(item.x, item.y, item.width, item.height));
-		}
-	}
-	/**
-	 * Loads the pickups for the level.
-	 *
-	 * Currently each pickup is a static image placed at a known position.
-	 *
-	 * @param	data	An array of grouped item types, image names, and positions.
-	 */
-	private function loadPickups(data:Array<Dynamic>):Void
-	{
-		for (item in data)
-		{
-			var pickup = new Pickup(item.type, item.x, item.y, item.image);
-			pickups.add(pickup);
 		}
 	}
 }

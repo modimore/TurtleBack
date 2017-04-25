@@ -2,6 +2,13 @@ package turtleback.states.play.environment;
 
 import flixel.FlxSprite;
 
+typedef PickupData = {
+	type:String,
+	image:String,
+	x:Float,
+	y:Float
+}
+
 class Pickup extends FlxSprite
 {
 	public var type(default, null):String;
