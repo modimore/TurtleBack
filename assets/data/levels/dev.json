@@ -6,15 +6,20 @@
 			{ "x":    0, "y":  480, "width": 1920, "height":   1 },
 			{ "x": 1920, "y": -480, "width":    1, "height": 960 }
 		],
-		"background": {
-			"type": "panel",
-			"data": [
-				{ "x": 0, "y": 0, "image": "assets/images/bg-forest.png" },
-				{ "x": 640, "y": 0, "image": "assets/images/bg-forest.png" },
-				{ "x": 1280, "y": 0, "image": "assets/images/bg-forest.png" },
-				{ "x": 0, "y": -480, "image": "assets/images/bg-forest.png" }
-			]
-		}
+		"tiles": [
+			{
+				"x": 0, "y": 0, "image": "assets/images/bg-forest.png",
+				"groundHeight": 450
+			},
+			{
+				"x": 640, "y": 0, "image": "assets/images/bg-forest.png",
+				"groundHeight": 460
+			},
+			{
+				"x": 1280, "y": 0, "image": "assets/images/bg-forest.png",
+				"groundHeight": 460
+			}
+		]
 	},
 	"pickups": [
 		{ "type": "mushroom", "x": 1000, "y": 400, "image": "assets/images/mushroom-tmp.png" },

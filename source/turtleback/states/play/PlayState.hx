@@ -82,7 +82,7 @@ class PlayState extends FlxState
 		super.update(dt);
 		
 		// Ensure that the player does not pass beyond the stage's boundaries.
-		FlxG.collide(m_player, m_level.boundaries);
+		FlxG.collide(m_player, m_level);
 		
 		if (FlxG.keys.anyPressed([Z]))
 		{
@@ -111,7 +111,7 @@ class PlayState extends FlxState
 		{
 			var data:LevelData = {
 				boundaries: [],
-				background: {type:"missing", data:null},
+				tiles: []
 			}
 			m_level = new Level(data);
 		}

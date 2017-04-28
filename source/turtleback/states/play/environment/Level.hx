@@ -7,6 +7,8 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.math.FlxRect;
 
+import turtleback.states.play.environment.LevelTile.TileData;
+
 /**
  * The coordinates and dimensions of a rectangle.
  */
@@ -28,7 +30,7 @@ typedef BackgroundData = {
  */
 typedef LevelData = {
 	boundaries:Array<Rectangle>,
-	background: BackgroundData
+	tiles:Array<TileData>
 }
 
 /**
@@ -36,10 +38,10 @@ typedef LevelData = {
  */
 class Level extends FlxGroup
 {
-	public var background(default, null):FlxBasic;
-	public var boundaries(default, null):FlxGroup;
-	
 	public var bounds(default, null):FlxRect;
+	public var boundaries(default, null):FlxGroup;
+	public var tiles(default, null):FlxGroup;
+	
 	/**
 	 * Constructs a level from an input object.
 	 * @param	levelData	A description of the components of a specific level.
@@ -50,24 +52,13 @@ class Level extends FlxGroup
 		
 		bounds = FlxRect.get();
 		boundaries = new FlxGroup();
+		tiles = new FlxGroup();
+		
+		loadTiles(levelData.tiles);
+		add(tiles);
+		
 		loadBoundaries(levelData.boundaries);
 		add(boundaries);
-		
-		loadBackground(levelData.background);
-		add(background);
-	}
-	/**
-	 * Creates a background for this level with the specified type and images.
-	 */
-	private function loadBackground(bgData:BackgroundData):Void
-	{
-		switch(bgData.type)
-		{
-			case "panel":
-				background = new PanelBackground(bgData.data);
-			default:
-				background = new FlxBasic();
-		}
 	}
 	/**
 	 * Creates the level boundaries from provided rectangle coordinates.
@@ -98,6 +89,17 @@ class Level extends FlxGroup
 			boundaries.add(object);
 			
 			bounds.union(FlxRect.weak(item.x, item.y, item.width, item.height));
+		}
+	}
+	/**
+	 * Loads the tiles that make up this level.
+	 * @param	data	An array containing the data for each tile.
+	 */
+	private function loadTiles(data:Array<TileData>)
+	{
+		for (tileData in data)
+		{
+			tiles.add(new LevelTile(tileData));
 		}
 	}
 }
