@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 
+import turtleback.states.play.environment.GroundObject;
 
 enum MotionState
 {
@@ -54,6 +55,8 @@ class Player extends FlxSprite
 		
 		m_motionState = IDLE;
 		m_motionDirection = NEUTRAL;
+		
+		acceleration.set(0, GRAVITY);
 	}
 	/**
 	 * Updates the player based on their current motion state.
@@ -61,6 +64,11 @@ class Player extends FlxSprite
 	 */
 	override public function update(dt:Float):Void
 	{
+		if (!isTouching(FlxObject.DOWN))
+		{
+			m_setState(FALLING);
+		}
+		
 		if (m_motionState != FALLING)
 		{
 			var up = FlxG.keys.anyPressed([UP, W]);
@@ -135,7 +143,6 @@ class Player extends FlxSprite
 			case WALKING:
 				m_setupWalkingState();
 			case FALLING:
-				acceleration.set(0, GRAVITY);
 				drag.set(0, drag.y);
 		}
 		
@@ -224,7 +231,6 @@ class Player extends FlxSprite
 	{
 		if (isTouching(FlxObject.DOWN))
 		{
-			acceleration.set(0, 0);
 			m_setState(IDLE);
 		}
 		else if (isTouching(FlxObject.UP))
@@ -240,5 +246,71 @@ class Player extends FlxSprite
 	private function m_updateIdleHelper():Void
 	{
 		
+	}
+	
+	/**
+	 * Determines if a player is colliding with a ground segment.
+	 *
+	 * In addition to determining whether the player is currently on the ground,
+	 * this also handles some of the side effects on the player from any such
+	 * collisions that take place.
+	 *
+	 * @param	p	The possibly-colliding player.
+	 * @param	g	The ground segment to check.
+	 */
+	public static function checkGroundCollision(p:Player, g:GroundObject):Bool
+	{
+		// When the player is across the border of two tiles
+		// this determines which ground segment to use.
+		if (!g.isDirectlyUnder(p))
+		{
+			return false;
+		}
+		
+		if (p.isTouching(FlxObject.DOWN))
+		{
+			return false;
+		}
+		
+		// Invokes and returns from a separate helper when the player is falling.
+		if (p.m_motionState == FALLING)
+		{
+			return m_checkGroundCollision_falling(p, g);
+		}
+		
+		if (g.isAboveGround(p))
+		{
+			return false;
+		}
+		
+		p.touching |= FlxObject.DOWN;
+		p.velocity.y = 0;
+		return true;
+	}
+	
+	/**
+	 * Determines if a falling player has reached the ground.
+	 *
+	 * This also stops the fall if the player is at or below ground level.
+	 *
+	 * @param	p	The possibly-colliding falling player.
+	 * @param	g	The ground segment to check.
+	 */
+	private static function m_checkGroundCollision_falling(p:Player, g:GroundObject):Bool
+	{
+		// A rising player should not be stopped.
+		// Without this check there can be trouble leaving the ground.
+		if (p.velocity.y < 0)
+		{
+			return false;
+		}
+		
+		if (g.isAboveGround(p))
+		{
+			return false;
+		}
+		
+		p.touching |= FlxObject.DOWN;
+		return true;
 	}
 }

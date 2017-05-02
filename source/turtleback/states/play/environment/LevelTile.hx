@@ -4,6 +4,9 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.group.FlxGroup;
 
+import turtleback.states.play.environment.GroundObject;
+import turtleback.states.play.environment.GroundObject.GroundData;
+
 /**
  * The data fields required by each level tile.
  */
@@ -11,7 +14,7 @@ typedef TileData = {
 	x:Float,
 	y:Float,
 	image:String,
-	groundHeight:Float
+	ground:GroundData
 }
 
 /**
@@ -22,7 +25,7 @@ typedef TileData = {
 class LevelTile extends FlxGroup
 {
 	private var m_bg:BackgroundSprite;
-	private var m_groundObject:FlxObject;
+	private var m_groundObject:GroundObject;
 	
 	/**
 	 * Constucts a new tile from an image and some ground data.
@@ -33,11 +36,11 @@ class LevelTile extends FlxGroup
 		super();
 		
 		m_bg = new BackgroundSprite(data.x, data.y, data.image);
-		add(m_bg);
 		
-		m_groundObject = new FlxObject(data.x, data.groundHeight, m_bg.width, 1);
-		m_groundObject.immovable = true;
-		m_groundObject.moves = false;
+		m_groundObject = new GroundObject(
+			m_bg.x, m_bg.y, m_bg.width, m_bg.height, data.ground);
+		
+		add(m_bg);
 		add(m_groundObject);
 	}
 }

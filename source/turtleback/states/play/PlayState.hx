@@ -15,6 +15,7 @@ import turtleback.states.cutscene.CutsceneState;
 
 import turtleback.states.play.environment.Level;
 import turtleback.states.play.environment.Level.LevelData;
+import turtleback.states.play.environment.GroundObject;
 import turtleback.states.play.environment.Pickup;
 import turtleback.states.play.environment.Pickup.PickupData;
 import turtleback.states.play.player.Player;
@@ -82,8 +83,11 @@ class PlayState extends FlxState
 		super.update(dt);
 		
 		// Ensure that the player does not pass beyond the stage's boundaries.
-		FlxG.collide(m_player, m_level);
+		FlxG.collide(m_player, m_level.boundaries);
 		
+		FlxG.overlap(m_player, m_level.tiles,
+			GroundObject.placeObjectAtGround, Player.checkGroundCollision);
+			
 		if (FlxG.keys.anyPressed([Z]))
 		{
 			FlxG.overlap(m_player, m_pickups, pickupCallback);

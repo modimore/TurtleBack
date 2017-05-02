@@ -9,15 +9,15 @@
 		"tiles": [
 			{
 				"x": 0, "y": 0, "image": "assets/images/bg-forest.png",
-				"groundHeight": 450
+				"ground": { "height1": 460, "height2": 450, "interpolationType": "linear" }
 			},
 			{
 				"x": 640, "y": 0, "image": "assets/images/bg-forest.png",
-				"groundHeight": 460
+				"ground": { "height1": 460, "height2": 460, "interpolationType": "constant" }
 			},
 			{
 				"x": 1280, "y": 0, "image": "assets/images/bg-forest.png",
-				"groundHeight": 460
+				"ground": { "height1": 460, "height2": 460, "interpolationType": "constant" }
 			}
 		]
 	},
