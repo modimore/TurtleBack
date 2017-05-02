@@ -178,7 +178,7 @@ class Player extends FlxSprite
 	 * based on their motion direction. Also sets the drag force acting on them
 	 * to zero.
 	 */
-	private function m_setupWalkingState()
+	private function m_setupWalkingState():Void
 	{
 		var velocityX:Float;
 		

@@ -56,7 +56,7 @@ class Goals
 	 *
 	 * @return	A boolean indicating whether all goals have been met.
 	 */
-	private function get_met()
+	private function get_met():Bool
 	{
 		return !m_goalsMet.has(false);
 	}

@@ -78,7 +78,7 @@ class PlayState extends FlxState
 	 * Updates all FlxObjects in this state.
 	 * @param	dt	The time that has passed since the last update
 	 */
-	override public function update(dt:Float)
+	override public function update(dt:Float):Void
 	{
 		super.update(dt);
 		

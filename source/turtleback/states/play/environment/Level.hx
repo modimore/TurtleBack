@@ -95,7 +95,7 @@ class Level extends FlxGroup
 	 * Loads the tiles that make up this level.
 	 * @param	data	An array containing the data for each tile.
 	 */
-	private function loadTiles(data:Array<TileData>)
+	private function loadTiles(data:Array<TileData>):Void
 	{
 		for (tileData in data)
 		{
