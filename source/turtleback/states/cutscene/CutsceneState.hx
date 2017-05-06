@@ -49,8 +49,6 @@ class CutsceneState extends FlxState
 	private var m_scriptEntryIndex:Int = 0;
 	private var m_lineIndex:Int = 0;
 	
-	private var m_lineSwitchDelay:Float = 1.0 / 6.0;
-	
 	private var m_bg:FlxSprite;
 	private var m_dialogUI:DialogUI;
 	
@@ -123,11 +121,7 @@ class CutsceneState extends FlxState
 	 */
 	override public function update(dt:Float):Void
 	{
-		if (m_lineSwitchDelay > 0)
-		{
-			m_lineSwitchDelay -= dt;
-		}
-		else if (FlxG.keys.anyPressed([Z]))
+		if (FlxG.keys.anyJustPressed([Z]))
 		{
 			++m_lineIndex;
 			
@@ -151,14 +145,12 @@ class CutsceneState extends FlxState
 					m_currentLines = m_script[m_scriptEntryIndex].lines;
 					m_lineIndex = 0;
 					m_dialogUI.setSpeaker(m_script[m_scriptEntryIndex].speaker, m_currentLines[m_lineIndex]);
-					m_lineSwitchDelay = 1.0 / 6.0;
 				}
 				
 				return;
 			}
 			
 			m_dialogUI.setLine(m_currentLines[m_lineIndex]);
-			m_lineSwitchDelay = 1.0 / 6.0;
 		}
 	}
 }
