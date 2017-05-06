@@ -27,7 +27,12 @@ class InventoryItemSprite extends FlxSpriteGroup
 	{
 		super(x, y);
 		
+		moves = false;
+		solid = false;
+		
 		itemImage = new FlxSprite(0, 0, assetPath);
+		itemImage.moves = false;
+		itemImage.solid = false;
 		
 		itemCount = new FlxText();
 		itemCount.text = Std.string(count);
@@ -65,6 +70,8 @@ class InventoryUI extends FlxSpriteGroup
 	public function new()
 	{
 		super();
+		scrollFactor.set(0, 0);
+		
 		// With not items, this should not be visible.
 		visible = false;
 		// This is not mobile and should not collide with anything.
@@ -73,13 +80,16 @@ class InventoryUI extends FlxSpriteGroup
 		
 		m_bg = new FlxSprite();
 		m_bg.makeGraphic(1, 80, FlxColor.GRAY);
-		add(m_bg);
+		m_bg.moves = false;
+		m_bg.solid = false;
 		
 		m_itemSprites = new Map<String, InventoryItemSprite>();
-		m_itemSpriteGroup = new FlxSpriteGroup(10, 0);
-		add(m_itemSpriteGroup);
+		m_itemSpriteGroup = new FlxSpriteGroup(10, 10);
+		m_itemSpriteGroup.moves = false;
+		m_itemSpriteGroup.solid = false;
 		
-		scrollFactor.set(0, 0);
+		add(m_bg);
+		add(m_itemSpriteGroup);
 	}
 	/**
 	 * Adds a slot for a item type to the inventory.
@@ -89,17 +99,21 @@ class InventoryUI extends FlxSpriteGroup
 	 */
 	public function addItemType(itemType:String, assetPath:String, count:Int = 0):Void
 	{
+		if (m_itemSprites.exists(itemType))
+		{
+			return;
+		}
+		
 		if (m_itemSpriteGroup.length == 0)
 		{
 			visible = true;
 		}
 		
 		var s = new InventoryItemSprite(0, 0, assetPath, count);
-		s.offsetFromLeft(m_bg, m_itemSpriteGroup.width + 10 * m_itemSpriteGroup.length);
-		s.alignCenterY(m_bg);
+		var marginLeft = m_itemSpriteGroup.length == 0 ? 0 : 10;
+		s.offsetFromLeft(m_bg, m_itemSpriteGroup.width + marginLeft);
 		
 		m_itemSpriteGroup.add(s);
-		
 		m_itemSprites.set(itemType, s);
 		
 		m_bg.makeGraphic(Std.int(m_itemSpriteGroup.width) + 20, Std.int(this.height), FlxColor.GRAY);

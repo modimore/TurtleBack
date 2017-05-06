@@ -55,10 +55,10 @@ class Level extends FlxGroup
 		tiles = new FlxGroup();
 		
 		loadTiles(levelData.tiles);
-		add(tiles);
-		
 		loadBoundaries(levelData.boundaries);
+		
 		add(boundaries);
+		add(tiles);
 	}
 	/**
 	 * Creates the level boundaries from provided rectangle coordinates.

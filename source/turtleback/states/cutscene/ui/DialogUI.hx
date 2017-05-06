@@ -28,10 +28,13 @@ class DialogUI extends FlxSpriteGroup
 	public function new(x:Float = 0, y:Float = 0, width:Float, height:Float)
 	{
 		super(x, y);
+		moves = false;
+		solid = false;
 		
 		m_bg = new FlxSprite();
 		m_bg.makeGraphic(Std.int(width), Std.int(height), BG_COLOR);
-		add(m_bg);
+		m_bg.moves = false;
+		m_bg.solid = false;
 		
 		m_speakerIdentifier = new FlxText();
 		m_speakerIdentifier.size = FONT_SIZE;
@@ -41,6 +44,7 @@ class DialogUI extends FlxSpriteGroup
 		m_currentLine.size = FONT_SIZE;
 		m_currentLine.offsetFromLeft(m_speakerIdentifier, m_speakerIdentifier.width);
 		
+		add(m_bg);
 		add(m_speakerIdentifier);
 		add(m_currentLine);
 	}

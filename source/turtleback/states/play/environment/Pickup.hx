@@ -18,5 +18,7 @@ class Pickup extends FlxSprite
 		this.type = type;
 		
 		super(x, y, image);
+		
+		moves = false;
 	}
 }

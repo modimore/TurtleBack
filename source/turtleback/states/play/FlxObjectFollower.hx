@@ -45,7 +45,10 @@ class FlxObjectFollower extends FlxGroup
 			y = m_target.y;
 		}
 		
-		anchor = new FlxObject(x, y, 0, 0);
+		anchor = new FlxObject(x, y, 10, 10);
+		anchor.moves = false;
+		anchor.solid = false;
+		
 		add(anchor);
 	}
 	
