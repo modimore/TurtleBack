@@ -121,6 +121,8 @@ class CutsceneState extends FlxState
 	 */
 	override public function update(dt:Float):Void
 	{
+		super.update(dt);
+		
 		if (FlxG.keys.anyJustPressed([Z]))
 		{
 			++m_lineIndex;
