@@ -10,6 +10,8 @@ import turtleback.states.cutscene.ui.DialogUI;
 
 import turtleback.states.play.PlayState;
 
+import turtleback.states.shared.TBEntity;
+
 using ext.flixel.FlxObjectExt;
 
 /**
@@ -51,6 +53,7 @@ class CutsceneState extends FlxState
 	
 	private var m_bg:FlxSprite;
 	private var m_dialogUI:DialogUI;
+	private var m_actors:Map<String, TBEntity>;
 	
 	private var m_isOutro:Bool;
 	
@@ -74,32 +77,32 @@ class CutsceneState extends FlxState
 	 */
 	override public function create():Void
 	{
+		m_actors = new Map<String, TBEntity>();
 		m_bg = new FlxSprite("assets/images/bg-hut.png");
 		add(m_bg);
 		
-		var player:FlxSprite = new FlxSprite();
-		player.loadGraphic("assets/images/player.png", false, 64, 256);
+		var player:TBEntity = new TBEntity("??????");
 		player.offsetFromLeft(m_bg, 90);
 		player.offsetFromBottom(m_bg, -72);
-		player.flipX = true;
+		m_actors.set("??????", player);
 		
-		var wizard:FlxSprite = new FlxSprite();
-		wizard.loadGraphic("assets/images/wizard.png", true, 128, 256);
+		var wizard:TBEntity = new TBEntity("wizard");
 		wizard.offsetFromRight(m_bg, -60);
 		wizard.offsetFromBottom(m_bg, -72);
-		wizard.animation.add("look_left", [0], 6);
-		wizard.animation.add("look_right", [1], 6);
-		wizard.animation.add("look_alternating", [0, 1], 6);
-		wizard.flipX = true;
+		m_actors.set("wizard", wizard);
 		
-		var pig:FlxSprite = new FlxSprite();
-		pig.loadGraphic("assets/images/pig.png", true, 128, 128);
+		var pig:TBEntity = new TBEntity("pig");
 		pig.alignBottom(wizard);
 		pig.offsetFromRight(wizard, -30);
+		m_actors.set("pig", pig);
 		
 		add(player);
 		add(wizard);
 		add(pig);
+		
+		player.animation.play("look_right");
+		wizard.animation.play("look_left");
+		pig.animation.play("look_left");
 		
 		m_dialogUI = new DialogUI(0, 0, FlxG.width - 20, 60);
 		m_dialogUI.alignCenterX(m_bg);

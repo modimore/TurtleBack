@@ -1,0 +1,9 @@
+{
+	"frame_width": 128,
+	"frame_height": 128,
+	"animations": [
+		{ "name": "look_left", "frames": [ 0 ], "framerate" : 6 },
+		{ "name": "look_right", "frames": [ 0 ], "framerate": 6,
+			"flipX": true }
+	]
+}
