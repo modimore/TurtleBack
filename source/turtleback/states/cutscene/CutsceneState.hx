@@ -1,5 +1,8 @@
 package turtleback.states.cutscene;
 
+import haxe.Json;
+import openfl.Assets;
+
 import flixel.FlxG;
 import flixel.FlxBasic;
 import flixel.FlxSprite;
@@ -14,37 +17,17 @@ import turtleback.states.shared.TBEntity;
 
 using ext.flixel.FlxObjectExt;
 
+typedef CutsceneData = {
+	var actors:Array<{ id:String, x:Int, y:Int, initial_anim:String }>;
+	var script:Script;
+}
+
 /**
  * The cutscene state for this game.
  */
 class CutsceneState extends FlxState
 {
-	private static var LINES_INTRO:Script = [
-		{
-			speaker: "Wizard",
-			lines: [
-				"",
-				"I'm a wizard.",
-				"Please find some mushrooms for my pig. I need three purple mushrooms for their dinner."
-			]
-		},
-		{
-			speaker: "??????",
-			lines: [
-				"Okay.",
-				""
-			]
-		}
-	];
-	private static var LINES_OUTRO:Script = [
-		{
-			speaker: "Wizard",
-			lines: [
-				"Thanks for getting me those mushrooms.",
-				""
-			]
-		}
-	];
+	private var m_dataPath:String;
 	
 	private var m_script:Script;
 	private var m_currentLines:Array<String>;
@@ -63,11 +46,11 @@ class CutsceneState extends FlxState
 		
 		if (outro)
 		{
-			m_script = LINES_OUTRO;
+			m_dataPath = "assets/data/cutscenes/dev_outro.json";
 		}
 		else
 		{
-			m_script = LINES_INTRO;
+			m_dataPath = "assets/data/cutscenes/dev_intro.json";
 		}
 		
 		m_isOutro = outro;
@@ -81,28 +64,20 @@ class CutsceneState extends FlxState
 		m_bg = new FlxSprite("assets/images/bg-hut.png");
 		add(m_bg);
 		
-		var player:TBEntity = new TBEntity("??????");
-		player.offsetFromLeft(m_bg, 90);
-		player.offsetFromBottom(m_bg, -72);
-		m_actors.set("??????", player);
-		
-		var wizard:TBEntity = new TBEntity("wizard");
-		wizard.offsetFromRight(m_bg, -60);
-		wizard.offsetFromBottom(m_bg, -72);
-		m_actors.set("wizard", wizard);
-		
-		var pig:TBEntity = new TBEntity("pig");
-		pig.alignBottom(wizard);
-		pig.offsetFromRight(wizard, -30);
-		m_actors.set("pig", pig);
-		
-		add(player);
-		add(wizard);
-		add(pig);
-		
-		player.animation.play("look_right");
-		wizard.animation.play("look_left");
-		pig.animation.play("look_left");
+		if (Assets.exists(m_dataPath, AssetType.TEXT))
+		{
+			var data:CutsceneData = Json.parse(Assets.getText(m_dataPath));
+			
+			for (actor in data.actors)
+			{
+				var actorEntity = new TBEntity(actor.id, actor.x, actor.y);
+				actorEntity.animation.play(actor.initial_anim);
+				m_actors.set(actor.id, actorEntity);
+				add(actorEntity);
+			}
+			
+			m_script = data.script;
+		}
 		
 		m_dialogUI = new DialogUI(0, 0, FlxG.width - 20, 60);
 		m_dialogUI.alignCenterX(m_bg);

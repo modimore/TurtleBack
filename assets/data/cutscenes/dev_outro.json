@@ -1,0 +1,16 @@
+{
+	"actors": [
+		{ "id": "??????", "x": 90, "y": 152, "initial_anim": "look_right" },
+		{ "id": "wizard", "x": 452, "y": 152, "initial_anim": "look_left" },
+		{ "id": "pig", "x": 422, "y": 280, "initial_anim": "look_left" }
+	],
+	"script": [
+		{
+			"speaker": "Wizard",
+			"lines": [
+				"Thanks for getting me those mushrooms.",
+				""
+			]
+		}
+	]
+}
