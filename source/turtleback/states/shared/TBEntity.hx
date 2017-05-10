@@ -44,7 +44,7 @@ class TBEntity extends FlxSprite
 		
 		// Paths to the resources for this entity.
 		var dataFilePath:String = 'assets/data/entities/${id}.json';
-		var spritesheetPath = 'assets/images/${id}.png';
+		var spritesheetPath = 'assets/images/entities/${id}.png';
 		
 		if (Assets.exists(dataFilePath))
 		{

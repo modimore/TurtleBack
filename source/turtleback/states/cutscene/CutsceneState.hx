@@ -61,7 +61,7 @@ class CutsceneState extends FlxState
 	override public function create():Void
 	{
 		m_actors = new Map<String, TBEntity>();
-		m_bg = new FlxSprite("assets/images/bg-hut.png");
+		m_bg = new FlxSprite("assets/images/backgrounds/hut.png");
 		add(m_bg);
 		
 		if (Assets.exists(m_dataPath, AssetType.TEXT))
