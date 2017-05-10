@@ -13,24 +13,24 @@ import turtleback.states.play.environment.LevelTile.TileInstanceData;
  * The coordinates and dimensions of a rectangle.
  */
 typedef Rectangle = {
-	x:Int,
-	y:Int,
-	width:Int,
-	height:Int
+	var x:Int;
+	var y:Int;
+	var width:Int;
+	var height:Int;
 }
 /**
  * Definition of the data required to create a background.
  */
 typedef BackgroundData = {
-	type:String,
-	data:Dynamic
+	var type:String;
+	var data:Dynamic;
 }
 /**
  * Definition of the fields required in the level data.
  */
 typedef LevelData = {
-	boundaries:Array<Rectangle>,
-	tiles:Array<TileInstanceData>
+	var boundaries:Array<Rectangle>;
+	var tiles:Array<TileInstanceData>;
 }
 
 /**

@@ -11,14 +11,17 @@ import turtleback.states.play.environment.GroundObject;
 import turtleback.states.play.environment.GroundObject.GroundData;
 
 /**
- * The data fields required by each level tile.
+ * The info required to instantiate a level tile.
  */
 typedef TileInstanceData = {
-	type:String,
-	x:Float,
-	y:Float
+	var type:String;
+	var x:Float;
+	var y:Float;
 }
 
+/**
+ * The fields required in the data about a tile type.
+ */
 typedef TileTypeData = {
 	var ground:GroundData;
 }
@@ -34,8 +37,10 @@ class LevelTile extends FlxGroup
 	private var m_groundObject:GroundObject;
 	
 	/**
-	 * Constucts a new tile from an image and some ground data.
-	 * @param	data	The data to construct the tile with.
+	 * Constucts a new tile from position data and a tile type id.
+	 * @param	type_id	The id for the type of tile to use.
+	 * @param	x	The x position of the tile.
+	 * @param	y	The y position of the tile.
 	 */
 	public function new(type_id:String, x:Float, y:Float)
 	{

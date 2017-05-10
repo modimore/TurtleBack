@@ -11,9 +11,9 @@ import ext.haxe.Interpolation;
  * that the ground level should always be between.
  */
 typedef GroundData = {
-	interpolationType:String,
-	height1:Float,
-	height2:Float
+	var interpolationType:String;
+	var height1:Float;
+	var height2:Float;
 }
 
 /**
