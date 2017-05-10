@@ -7,7 +7,7 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.math.FlxRect;
 
-import turtleback.states.play.environment.LevelTile.TileData;
+import turtleback.states.play.environment.LevelTile.TileInstanceData;
 
 /**
  * The coordinates and dimensions of a rectangle.
@@ -30,7 +30,7 @@ typedef BackgroundData = {
  */
 typedef LevelData = {
 	boundaries:Array<Rectangle>,
-	tiles:Array<TileData>
+	tiles:Array<TileInstanceData>
 }
 
 /**
@@ -95,11 +95,11 @@ class Level extends FlxGroup
 	 * Loads the tiles that make up this level.
 	 * @param	data	An array containing the data for each tile.
 	 */
-	private function loadTiles(data:Array<TileData>):Void
+	private function loadTiles(data:Array<TileInstanceData>):Void
 	{
 		for (tileData in data)
 		{
-			tiles.add(new LevelTile(tileData));
+			tiles.add(new LevelTile(tileData.type, tileData.x, tileData.y));
 		}
 	}
 }

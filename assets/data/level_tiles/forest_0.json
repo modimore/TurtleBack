@@ -1,0 +1,7 @@
+{
+	"ground": {
+		"height1": 460,
+		"height2": 460,
+		"interpolationType": "constant"
+	}
+}

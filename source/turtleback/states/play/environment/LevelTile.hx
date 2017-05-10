@@ -1,5 +1,8 @@
 package turtleback.states.play.environment;
 
+import haxe.Json;
+import openfl.Assets;
+
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.group.FlxGroup;
@@ -10,11 +13,14 @@ import turtleback.states.play.environment.GroundObject.GroundData;
 /**
  * The data fields required by each level tile.
  */
-typedef TileData = {
+typedef TileInstanceData = {
+	type:String,
 	x:Float,
-	y:Float,
-	image:String,
-	ground:GroundData
+	y:Float
+}
+
+typedef TileTypeData = {
+	var ground:GroundData;
 }
 
 /**
@@ -31,14 +37,25 @@ class LevelTile extends FlxGroup
 	 * Constucts a new tile from an image and some ground data.
 	 * @param	data	The data to construct the tile with.
 	 */
-	public function new(data:TileData)
+	public function new(type_id:String, x:Float, y:Float)
 	{
 		super();
 		
-		m_bg = new BackgroundSprite(data.x, data.y, data.image);
+		var imagePath = 'assets/images/backgrounds/${type_id}.png';
+		var dataPath = 'assets/data/level_tiles/${type_id}.json';
 		
-		m_groundObject = new GroundObject(
-			m_bg.x, m_bg.y, m_bg.width, m_bg.height, data.ground);
+		m_bg = new BackgroundSprite(x, y, imagePath);
+		
+		if (Assets.exists(dataPath, AssetType.TEXT))
+		{
+			var tileData:TileTypeData = Json.parse(Assets.getText(dataPath));
+			m_groundObject = new GroundObject(
+				x, y, m_bg.width, m_bg.height, tileData.ground);
+		}
+		else
+		{
+			m_groundObject = null;
+		}
 		
 		add(m_bg);
 		add(m_groundObject);

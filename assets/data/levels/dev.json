@@ -7,18 +7,9 @@
 			{ "x": 1920, "y": -480, "width":    1, "height": 960 }
 		],
 		"tiles": [
-			{
-				"x": 0, "y": 0, "image": "assets/images/backgrounds/forest_0.png",
-				"ground": { "height1": 460, "height2": 450, "interpolationType": "linear" }
-			},
-			{
-				"x": 640, "y": 0, "image": "assets/images/backgrounds/forest_0.png",
-				"ground": { "height1": 460, "height2": 460, "interpolationType": "constant" }
-			},
-			{
-				"x": 1280, "y": 0, "image": "assets/images/backgrounds/forest_0.png",
-				"ground": { "height1": 460, "height2": 460, "interpolationType": "constant" }
-			}
+			{ "x":    0, "y": 0, "type": "forest_0" },
+			{ "x":  640, "y": 0, "type": "forest_0" },
+			{ "x": 1280, "y": 0, "type": "forest_0" }
 		]
 	},
 	"pickups": [
