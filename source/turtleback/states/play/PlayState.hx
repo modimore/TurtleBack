@@ -86,7 +86,7 @@ class PlayState extends FlxState
 		FlxG.collide(m_player, m_level.boundaries);
 		
 		FlxG.overlap(m_player, m_level.tiles,
-			GroundObject.placeObjectAtGround, Player.checkGroundCollision);
+			null, GroundObject.collideObjectWithGround);
 			
 		if (FlxG.keys.anyPressed([Z]))
 		{

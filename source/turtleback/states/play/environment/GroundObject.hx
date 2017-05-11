@@ -31,14 +31,45 @@ class GroundObject extends FlxObject
 	private var m_groundInterpolator:Float->Float;
 	
 	/**
-	 * Places the supplied object at ground level in the supplied segment.
-	 * @param	o	The object to place on the ground.
-	 * @param	g	The ground segment to use the height values for.
+	 * Handles collisions between a FlxObject and a ground tile.
+	 *
+	 * This handles the effects of a collision only if it should happen,
+	 * otherwise it does nothing and returns false to signify that the
+	 * collision has not taken place.
+	 *
+	 * @param	o	The possibly-colliding object.
+	 * @param	g	The ground segment to check.
 	 */
-	public static function placeObjectAtGround(o:FlxObject, g:GroundObject):Void
+	public static function collideObjectWithGround(o:FlxObject, g:GroundObject):Bool
 	{
+		// These values are relevant for the rest of the function.
+		var oBottomY = o.y + o.height;
 		var oCenterX = o.x + (o.width / 2);
-		o.y = g.getGroundHeightAt(oCenterX) - o.height;
+		var groundHeight = g.getGroundHeightAt(oCenterX);
+		
+		// A collision is not happening if any of the following are true:
+		// - the object parameter is rising.
+		// - the bottom of the object is already touching something
+		// - The center of the object is not over this ground segment
+		// - the bottom of the object is below this ground segment
+		// - the bottom of the object is above the ground level
+		var areNotColliding = false
+			|| o.velocity.y < 0
+			|| o.isTouching(FlxObject.DOWN)
+			|| oCenterX < g.x || oCenterX > g.x + g.width
+			|| oBottomY > g.y + g.height
+			|| groundHeight > oBottomY;
+		
+		if (areNotColliding)
+			return false;
+		
+		// Place the object at the correct ground level,
+		// set its touching flag to true in the down direction,
+		// and set its velocity to zero.
+		o.y = groundHeight - o.height;
+		o.touching |= FlxObject.DOWN;
+		o.velocity.y = 0;
+		return true;
 	}
 	
 	/**
