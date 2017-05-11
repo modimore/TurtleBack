@@ -4,7 +4,7 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 
-import turtleback.states.play.environment.GroundObject;
+import turtleback.states.shared.TBEntity;
 
 enum MotionState
 {
@@ -23,7 +23,7 @@ enum MotionDirection
 /**
  * The player's sprite in this game.
  */
-class Player extends FlxSprite
+class Player extends TBEntity
 {
 	private static var WALK_SPEED:Float = 100.0;
 	private static var JUMP_SPEED:Float = 200.0;
@@ -43,12 +43,7 @@ class Player extends FlxSprite
 	 */
 	public function new(x:Float = 0, y:Float = 0)
 	{
-		super(x, y);
-		
-		loadGraphic("assets/images/player.png", false, 64, 256);
-		
-		setFacingFlip(FlxObject.LEFT, false, false);
-		setFacingFlip(FlxObject.RIGHT, true, false);
+		super("??????", x, y);
 		
 		inventory = new Inventory(this);
 		goals = new Goals();
@@ -187,9 +182,11 @@ class Player extends FlxSprite
 			case LEFT:
 				velocityX = -WALK_SPEED;
 				facing = FlxObject.LEFT;
+				animation.play("look_left");
 			case RIGHT:
 				velocityX = WALK_SPEED;
 				facing = FlxObject.RIGHT;
+				animation.play("look_right");
 			default:
 				velocityX = 0;
 		}
