@@ -43,7 +43,7 @@ class Player extends TBEntity
 	 */
 	public function new(x:Float = 0, y:Float = 0)
 	{
-		super("??????", x, y);
+		super("Player", x, y);
 		
 		inventory = new Inventory(this);
 		goals = new Goals();

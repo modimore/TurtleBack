@@ -1,8 +1,8 @@
 {
 	"actors": [
-		{ "id": "??????", "x": 90, "y": 152, "initial_anim": "look_right" },
-		{ "id": "wizard", "x": 452, "y": 152, "initial_anim": "look_left" },
-		{ "id": "pig", "x": 422, "y": 280, "initial_anim": "look_left" }
+		{ "id": "Player", "x": 90, "y": 152, "initial_anim": "look_right" },
+		{ "id": "Wizard", "x": 452, "y": 152, "initial_anim": "look_left" },
+		{ "id": "Pig", "x": 422, "y": 280, "initial_anim": "look_left" }
 	],
 	"script": [
 		{
@@ -14,7 +14,7 @@
 			]
 		},
 		{
-			"speaker": "??????",
+			"speaker": "Player",
 			"lines": [
 				"Okay.",
 				""
