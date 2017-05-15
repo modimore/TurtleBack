@@ -31,11 +31,12 @@ class Pickup extends FlxSprite
 	 * @param	y	The y position of the item.
 	 * @param	image	The path to the image for the item.
 	 */
-	public function new(type:String, x:Float = 0, y:Float = 0, image:String)
+	public function new(type:String, x:Float = 0, y:Float = 0)
 	{
 		this.type = type;
 		
-		super(x, y, image);
+		var imagePath ='assets/images/pickups/${type}.png';
+		super(x, y, imagePath);
 		
 		moves = false;
 	}

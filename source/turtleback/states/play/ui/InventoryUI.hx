@@ -23,13 +23,14 @@ class InventoryItemSprite extends FlxSpriteGroup
 	 * @param	y	The y position of the group.
 	 * @param	assetPath	The path to the item asset.
 	 */
-	public function new(x:Float, y:Float, assetPath:String,count:Int)
+	public function new(x:Float, y:Float, itemType:String, count:Int)
 	{
 		super(x, y);
 		
 		moves = false;
 		solid = false;
 		
+		var assetPath = 'assets/images/pickups/${itemType}_inventory.png';
 		itemImage = new FlxSprite(0, 0, assetPath);
 		itemImage.moves = false;
 		itemImage.solid = false;
@@ -97,7 +98,7 @@ class InventoryUI extends FlxSpriteGroup
 	 * @param	assetPath An image to show in the inventory slot for this item.
 	 * @param	count	The initial number of items of this type.
 	 */
-	public function addItemType(itemType:String, assetPath:String, count:Int = 0):Void
+	public function addItemType(itemType:String, count:Int = 0):Void
 	{
 		if (m_itemSprites.exists(itemType))
 		{
@@ -109,7 +110,7 @@ class InventoryUI extends FlxSpriteGroup
 			visible = true;
 		}
 		
-		var s = new InventoryItemSprite(0, 0, assetPath, count);
+		var s = new InventoryItemSprite(0, 0, itemType, count);
 		var marginLeft = m_itemSpriteGroup.length == 0 ? 0 : 10;
 		s.offsetFromLeft(m_bg, m_itemSpriteGroup.width + marginLeft);
 		

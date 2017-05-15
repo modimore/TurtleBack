@@ -64,7 +64,7 @@ class PlayState extends FlxState
 		inventoryUI = new InventoryUI();
 		
 		m_player.inventory.connectUI(inventoryUI);
-		m_player.inventory.addItemType("mushroom", "assets/images/mushroom-tmp.png");
+		m_player.inventory.addItemType("mushroom");
 		
 		add(m_level);
 		add(m_pickups);
@@ -133,7 +133,7 @@ class PlayState extends FlxState
 	{
 		for (item in data)
 		{
-			var pickup = new Pickup(item.type, item.x, item.y, item.image);
+			var pickup = new Pickup(item.type, item.x, item.y);
 			m_pickups.add(pickup);
 		}
 	}

@@ -39,12 +39,12 @@ class Inventory
 	 * @param	itemType	The key for the item type to add.
 	 * @param	assetPath	The path to an image to represent the item type on the UI.
 	 */
-	public function addItemType(itemType:String, assetPath:String):Void
+	public function addItemType(itemType:String):Void
 	{
 		if (!m_itemTypeCounts.exists(itemType))
 		{
 			m_itemTypeCounts.set(itemType, 0);
-			r_ui.addItemType(itemType, assetPath, 0);
+			r_ui.addItemType(itemType, 0);
 		}
 	}
 	/**
