@@ -1,0 +1,22 @@
+{
+	"level": {
+		"boundaries": [
+			{ "x":    0, "y":    0, "width":    1, "height": 960 },
+			{ "x":    0, "y":    0, "width": 1920, "height":   1 },
+			{ "x":    0, "y":  480, "width": 1920, "height":   1 },
+			{ "x": 1920, "y":    0, "width":    1, "height": 960 }
+		],
+		"tiles": [
+			{ "x":    0, "y": 0, "type": "Desert_1" },
+			{ "x":  640, "y": 0, "type": "Desert_1" },
+			{ "x": 1280, "y": 0, "type": "Desert_1" }
+		]
+	},
+	"pickups": [
+		{ "type": "PricklyPear", "x":  300, "y": 300 },
+		{ "type": "PricklyPear", "x": 1500, "y": 300 }
+	],
+	"quotas": [
+		{ "type": "PricklyPear", "quantity": 2 }
+	]
+}

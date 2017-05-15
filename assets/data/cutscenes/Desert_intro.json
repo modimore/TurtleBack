@@ -1,0 +1,28 @@
+{
+	"actors": [
+		{ "id": "Player", "x": 90, "y": 152, "initial_anim": "look_right" },
+		{ "id": "Wizard", "x": 400, "y": 152, "initial_anim": "look_left" },
+		{ "id": "Antlion", "x": 422, "y": 152, "initial_anim": "look_left" }
+	],
+	"script": [
+		{
+			"speaker": "Wizard",
+			"lines": [
+				"This one also needs feeding."
+			]
+		},
+		{
+			"speaker": "Player",
+			"lines": [
+				"Oh goodness."
+			]
+		},
+		{
+			"speaker": "Wizard",
+			"lines": [
+				"The eat cacti.",
+				"Could you get me two cacti?"
+			]
+		}
+	]
+}
