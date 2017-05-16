@@ -11,7 +11,7 @@ import flixel.FlxState;
 import flixel.math.FlxRect;
 import flixel.group.FlxGroup;
 
-import turtleback.states.cutscene.CutsceneState;
+import turtleback.states.TBBaseState;
 
 import turtleback.states.play.environment.Level;
 import turtleback.states.play.environment.Level.LevelData;
@@ -25,10 +25,8 @@ import turtleback.states.play.ui.InventoryUI;
 /**
  * The play state for this game.
  */
-class PlayState extends FlxState
+class PlayState extends TBBaseState
 {
-	private var m_dataPath:String = "assets/data/levels/dev.json";
-	
 	private var m_cameraTarget:FlxObjectFollower;
 	private var m_player:Player;
 	private var m_pickups:FlxGroup;
@@ -36,6 +34,7 @@ class PlayState extends FlxState
 	public var inventoryUI:InventoryUI;
 	
 	private var m_level:Level;
+	
 	/**
 	 * Creates all FlxObject children when added to the game root.
 	 */
@@ -65,6 +64,7 @@ class PlayState extends FlxState
 		
 		m_player.inventory.connectUI(inventoryUI);
 		m_player.inventory.addItemType("mushroom");
+		m_player.inventory.addItemType("PricklyPear");
 		
 		add(m_level);
 		add(m_pickups);
@@ -98,9 +98,11 @@ class PlayState extends FlxState
 	 */
 	private function loadLevel():Void
 	{
-		if (Assets.exists(m_dataPath, AssetType.TEXT))
+		var dataPath = 'assets/data/levels/${stateID}.json';
+		
+		if (Assets.exists(dataPath, AssetType.TEXT))
 		{
-			var data = Json.parse(Assets.getText(m_dataPath));
+			var data = Json.parse(Assets.getText(dataPath));
 			m_level = new Level(data.level);
 			
 			loadPickups(data.pickups);
@@ -153,7 +155,7 @@ class PlayState extends FlxState
 		
 		if (m_player.goals.met)
 		{
-			FlxG.switchState(new CutsceneState(true));
+			m_endState();
 		}
 	}
 }
