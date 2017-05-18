@@ -10,8 +10,7 @@ import flixel.FlxGame;
 import flixel.FlxState;
 
 import turtleback.states.TBBaseState;
-import turtleback.states.cutscene.CutsceneState;
-import turtleback.states.play.PlayState;
+import turtleback.states.TBStateBuilder;
 
 typedef StateInfo = {
 	var type:String;
@@ -55,15 +54,8 @@ class Main extends Sprite
 		if (m_stateIndex == m_stateData.length)
 			m_stateIndex = 0;
 		
-		var nextState:TBBaseState = switch(m_stateData[m_stateIndex].type)
-		{
-			case "cutscene":
-				new CutsceneState(m_stateData[m_stateIndex].id);
-			case "gameplay":
-				new PlayState(m_stateData[m_stateIndex].id);
-			case _:
-				new TBBaseState("INVALID");
-		}
+		var data = m_stateData[m_stateIndex];
+		var nextState:TBBaseState = TBStateBuilder.buildState(data.type, data.id);
 		
 		nextState.stateEndSignal.addOnce(advanceState);
 		FlxG.switchState(nextState);
