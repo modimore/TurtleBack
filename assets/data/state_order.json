@@ -1,0 +1,8 @@
+[
+	{ "type": "cutscene", "id": "dev_intro" },
+	{ "type": "gameplay", "id": "dev" },
+	{ "type": "cutscene", "id": "dev_outro" },
+	{ "type": "cutscene", "id": "Desert_intro" },
+	{ "type": "gameplay", "id": "Desert" },
+	{ "type": "cutscene", "id": "Desert_outro" }
+]

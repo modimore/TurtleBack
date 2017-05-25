@@ -58,7 +58,7 @@ class GroundObject extends FlxObject
 			|| o.isTouching(FlxObject.DOWN)
 			|| oCenterX < g.x || oCenterX > g.x + g.width
 			|| oBottomY > g.y + g.height
-			|| groundHeight > oBottomY;
+			|| groundHeight - GROUND_EPSILON > oBottomY;
 		
 		if (areNotColliding)
 			return false;
@@ -91,6 +91,8 @@ class GroundObject extends FlxObject
 				Interpolation.constant;
 			case "linear":
 				Interpolation.linear;
+			case "parabolic":
+				Interpolation.parabolic;
 			default:
 				Interpolation.constant;
 		}

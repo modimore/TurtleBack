@@ -30,4 +30,20 @@ class Interpolation
 	{
 		return t;
 	}
+	/**
+	 * An interpolation function for a parabolic curve.
+	 *
+	 * The parabola this function refers to has its vertex at t = 0.5.
+	 * To this function, the vertex represents the maximum value of 1.0
+	 * so that it will be the lowest point in screen space when used with
+	 * a positive coefficient.
+	 *
+	 * @param	t	The input parameter.
+	 * @return	The time on the parabola.
+	 */
+	public static function parabolic(t:Float):Float
+	{
+		t = 2.0 * (t - 0.5);
+		return 1.0 - t * t;
+	}
 }

@@ -13,9 +13,9 @@
 		]
 	},
 	"pickups": [
-		{ "type": "mushroom", "x":  450, "y": 400, "image": "assets/images/mushroom-tmp.png" },
-		{ "type": "mushroom", "x":  940, "y": 250, "image": "assets/images/mushroom-tmp.png" },
-		{ "type": "mushroom", "x": 1840, "y": 400, "image": "assets/images/mushroom-tmp.png" }
+		{ "type": "mushroom", "x":  450, "y": 400 },
+		{ "type": "mushroom", "x":  940, "y": 250 },
+		{ "type": "mushroom", "x": 1840, "y": 400 }
 	],
 	"quotas": [
 		{ "type": "mushroom", "quantity": 3 }

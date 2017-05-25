@@ -11,8 +11,7 @@ import flixel.text.FlxText;
 
 import turtleback.states.cutscene.ui.DialogUI;
 
-import turtleback.states.play.PlayState;
-
+import turtleback.states.TBBaseState;
 import turtleback.states.shared.TBEntity;
 
 using ext.flixel.FlxObjectExt;
@@ -25,10 +24,8 @@ typedef CutsceneData = {
 /**
  * The cutscene state for this game.
  */
-class CutsceneState extends FlxState
+class CutsceneState extends TBBaseState
 {
-	private var m_dataPath:String;
-	
 	private var m_script:Script;
 	private var m_currentLines:Array<String>;
 	private var m_scriptEntryIndex:Int = 0;
@@ -38,23 +35,6 @@ class CutsceneState extends FlxState
 	private var m_dialogUI:DialogUI;
 	private var m_actors:Map<String, TBEntity>;
 	
-	private var m_isOutro:Bool;
-	
-	public function new(outro:Bool = false)
-	{
-		super();
-		
-		if (outro)
-		{
-			m_dataPath = "assets/data/cutscenes/dev_outro.json";
-		}
-		else
-		{
-			m_dataPath = "assets/data/cutscenes/dev_intro.json";
-		}
-		
-		m_isOutro = outro;
-	}
 	/**
 	 * Creates the actors and the dialog UI element.
 	 */
@@ -64,9 +44,11 @@ class CutsceneState extends FlxState
 		m_bg = new FlxSprite("assets/images/backgrounds/hut.png");
 		add(m_bg);
 		
-		if (Assets.exists(m_dataPath, AssetType.TEXT))
+		var dataPath = 'assets/data/cutscenes/${stateID}.json';
+		
+		if (Assets.exists(dataPath, AssetType.TEXT))
 		{
-			var data:CutsceneData = Json.parse(Assets.getText(m_dataPath));
+			var data:CutsceneData = Json.parse(Assets.getText(dataPath));
 			
 			for (actor in data.actors)
 			{
@@ -111,14 +93,7 @@ class CutsceneState extends FlxState
 				
 				if (m_scriptEntryIndex >= m_script.length)
 				{
-					if (m_isOutro)
-					{
-						FlxG.switchState(new CutsceneState(false));
-					}
-					else
-					{
-						FlxG.switchState(new PlayState());
-					}
+					m_endState();
 				}
 				else
 				{

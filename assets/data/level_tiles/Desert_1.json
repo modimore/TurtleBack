@@ -1,0 +1,7 @@
+{
+	"ground": {
+		"height1": 400,
+		"height2": 430,
+		"interpolationType": "parabolic"
+	}
+}
